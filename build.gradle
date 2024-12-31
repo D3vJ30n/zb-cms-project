@@ -1,50 +1,57 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.4.1'
-	id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+    id 'org.springframework.boot' version '3.4.1'
+    id 'io.spring.dependency-management' version '1.1.4'
 }
 
-group = 'com.zerobase.cms'
+group = 'com.zerobase'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
+    sourceCompatibility = '17'
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    all {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation ('org.springframework.boot:spring-boot-starter-web') {
+        exclude group: 'org.apache.httpcomponents.client5', module: 'httpclient5'
+    }
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.hibernate.orm:hibernate-core:6.6.4.Final'
+    implementation 'org.hibernate.orm:hibernate-envers:6.6.4.Final'
     implementation 'com.mailgun:mailgun-java:1.0.7'
+    implementation 'com.konghq:unirest-java:3.14.5'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
-    
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation platform('org.apache.httpcomponents.client5:httpclient5-parent:5.2.1')
+    implementation 'org.apache.httpcomponents.client5:httpclient5'
+    implementation 'org.apache.httpcomponents.core5:httpcore5'
+    implementation 'org.apache.httpcomponents.core5:httpcore5-h2'
+    implementation 'org.apache.httpcomponents.client5:httpclient5-fluent'
+    implementation 'org.apache.httpcomponents.client5:httpclient5-cache'
+    implementation 'org.apache.httpcomponents.client5:httpclient5-win'
+    
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.mysql:mysql-connector-j'
     
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     
-    runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'com.mysql:mysql-connector-j'
-    
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
 }

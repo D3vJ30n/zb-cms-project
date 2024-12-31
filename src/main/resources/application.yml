@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:cms;MODE=MYSQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 10000
+      connection-timeout: 5000
+      validation-timeout: 1000
+      max-lifetime: 30000
+      leak-detection-threshold: 30000
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        jdbc:
+          batch_size: 100
+          order_inserts: true
+          order_updates: true
+
+mailgun:
+  api-key: ${MAILGUN_API_KEY:97c30a685bbe6a6a9ca8bcc6b0cd4519-78f6ccbe-ff1db3e4}
+  domain: ${MAILGUN_DOMAIN:sandbox0dc258dd80fd43fe96e4a6c52b47e8c8.mailgun.org}
+  from: no-reply@zerobase.com  # 발신자 이메일
+
+jwt:
+  secret-key: ${JWT_SECRET:my-secret-key-123456789-my-secret-key-123456789-my-secret-key-123456789}
+  token-expired-time-ms: 86400000 # 24시간

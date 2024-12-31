@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  user-api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/cms
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_REDIS_HOST=redis
+      - MAILGUN_API_KEY=${MAILGUN_API_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_DATABASE=cms
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:7.0
+    ports:
+      - "6379:6379"
+
+volumes:
+  mysql_data:
